@@ -68,14 +68,14 @@
 
   <!--Esta sección es del cuerpo de la aplicación-->
   <section class="store bg-emerald-300" x-data="products" @filter.window="search = $event.detail">
-    <div class="bg-emerald-100">
 
-      
+    <div class="bg-white">
 
       <div class="mx-auto max-w-2xl py-10 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        
-        <h3 class="text-4xl font-bold tracking-tight text-black py-6">Ofertas! 🎉</h3>
-          
+
+        <div x-show="search===''">
+          <h3 class="text-4xl font-bold tracking-tight text-black py-6">Ofertas! 🎉</h3>
+
           <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
             <template x-for="product in offerResults" :key="product.id">
@@ -85,36 +85,58 @@
                   <img :src="product.image">
                 </div>
                 <h3 class="mt-4 text-sm text-gray-700 font-bold" x-text="product.name"></h3>
-                <p class="mt-1 text-lg font-medium text-gray-500"><span x-text="product.discount"></span>%</p>
+                <p class="mt-1 text-lg font-medium text-gray-500">Bs. <span x-text="offerPrice(product.price,product.discount)"></span></p>
+                <p class="mt-1 text-2xl font-medium text-red-500"><span x-text="product.discount"></span>% de descuento</p>
               </a>
             </template>
 
           </div>
+        </div>
 
         <h3 class="text-4xl font-bold tracking-tight text-black py-6">Productos</h3>
 
+        <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+
+          <template x-for="product in searchResults" :key="product.id">
+            <a href="#" class="group">
+              <div
+                class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
+                <img :src="product.image">
+              </div>
+              <h3 class="mt-4 text-sm text-gray-700 font-bold" x-text="product.name"></h3>
+              <p class="mt-1 text-lg font-medium text-gray-500" x-show="product.discount===0">
+                Bs. <span x-text="product.price"></span>
+              </p>
+              <p class="mt-1 text-lg font-medium text-gray-500" x-show="product.discount!==0">
+                <span style="text-decoration: line-through;" > Bs. <span x-text="product.price"></span> </span> 
+              <span class="mx-2 text-red-500 text-2xl" x-text="'Oferta!!! '"></span>
+              <span class="text-xl">Bs. <span x-text="offerPrice(product.price,product.discount)"></span> </span>
+              </p>
+            </a>
+          </template>
+        </div>
+
+        <div x-show="search!==''">
+          <h3 class="text-4xl font-bold tracking-tight text-black py-6">Ofertas! 🎉</h3>
+
           <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
-            <template x-for="product in searchResults" :key="product.id">
+            <template x-for="product in offerResults" :key="product.id">
               <a href="#" class="group">
                 <div
                   class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
                   <img :src="product.image">
                 </div>
                 <h3 class="mt-4 text-sm text-gray-700 font-bold" x-text="product.name"></h3>
-                <p class="mt-1 text-lg font-medium text-gray-500">
-                  Bs. <span x-text="product.price"></span>
-                  <span class="mx-4 text-red-500 text-2xl" x-show="product.discount!==0" x-text="'Oferta!!!'"></span>
-                </p>
+                <p class="mt-1 text-lg font-medium text-gray-500">Bs. <span x-text="offerPrice(product.price,product.discount)"></span></p>
+                <p class="mt-1 text-2xl font-medium text-red-500"><span x-text="product.discount"></span>% de descuento</p>
               </a>
             </template>
 
           </div>
-        
-          
+        </div>
 
       </div>
-    </div>
     </div>
   </section>
   <!---->
@@ -279,10 +301,13 @@
           },
         );
       },
-      offerResults(){
+      offerResults() {
         return this.items.filter(
-          product => product.discount ===0 ? false : true 
+          product => product.discount === 0 ? false : true
         );
+      },
+      offerPrice(price,discount) {
+                return Math.trunc(price * (100-discount)/100)  
       },
       selectedProduct: {},
     };
