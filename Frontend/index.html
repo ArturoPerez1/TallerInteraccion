@@ -20,10 +20,19 @@
 
 <body>
   <!--esta sección es la navbar-->
-  <div class="navbar bg-emerald-400">
+  <header class="navbar bg-emerald-400 sticky top-0 z-50">
     <div class="flex-1">
-      <a class="btn btn-ghost normal-case text-3xl">
+      <a x-data="{ open:null}" x-init="open= window.outerWidth > 850 ? true : false" @resize.window="open = window.outerWidth > 850 ? true : false" x-show="open" class="btn btn-ghost normal-case text-3xl">
         <span class="pixel-donuts">🍩Pixel Donuts</span>
+      </a>
+      <a x-data="{ open:null}" x-init="open=window.outerWidth > 1020 ? true : false" @resize.window="open = window.outerWidth > 1020 ? true : false" x-show="open" class="btn btn-ghost normal-case text-3xl px-6 mx-4">
+        <span class="pixel-donuts">Historia</span>
+      </a>
+      <a x-data="{ open:null}" x-init="open=window.outerWidth > 1420 ? true : false" @resize.window="open = window.outerWidth > 1420 ? true : false" x-show="open" class="btn btn-ghost normal-case text-3xl px-6 mx-4">
+        <span class="pixel-donuts">Información Nutricional</span>
+      </a>
+      <a x-data="{ open:null}" x-init="open=window.outerWidth > 1820 ? true : false" @resize.window="open = window.outerWidth > 1820 ? true : false" x-show="open" class="btn btn-ghost normal-case text-3xl px-6 mx-4">
+        <span class="pixel-donuts">Localizador de Tiendas</span>
       </a>
     </div>
     <div class=" flex space-x-20">
@@ -63,7 +72,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </header>
   <!---->
 
   <!--Esta sección es del cuerpo de la aplicación-->
@@ -74,7 +83,7 @@
       <div class="mx-auto max-w-2xl py-10 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
 
         <div x-show="search===''">
-          <h3 class="text-4xl font-bold tracking-tight text-black py-6">Ofertas! 🎉</h3>
+          <h3 class="pixel-donuts text-4xl font-bold tracking-tight text-black pb-4">Ofertas! 🎉</h3>
 
           <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
@@ -93,7 +102,7 @@
           </div>
         </div>
 
-        <h3 class="text-4xl font-bold tracking-tight text-black py-6">Productos</h3>
+        <h3 class="pixel-donuts text-4xl font-bold tracking-tight text-black pt-8 pb-4">Productos</h3>
 
         <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
